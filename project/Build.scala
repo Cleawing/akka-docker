@@ -9,7 +9,7 @@ object DockerScalaBuild extends MechaRepoBuild {
     scalaVersion := "2.11.7",
     version := "0.1",
     organization := "com.cleawing",
-    libraryDependencies ++= superRepoDependencies("docker-scala")
+    libraryDependencies ++= superRepoDependencies("docker-scala") ++ Dependencies.akka
   )
 
   def repoName = "docker-scala"
