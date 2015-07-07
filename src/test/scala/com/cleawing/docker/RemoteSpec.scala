@@ -1,11 +1,8 @@
 package com.cleawing.docker
 
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.IllegalResponseException
-import akka.http.scaladsl.model.StatusCodes._
-import akka.stream.StreamTcpException
 import akka.testkit.TestKit
-import com.cleawing.docker.api.Data
+import com.cleawing.docker.api.{RemoteClient, Data}
 import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Millis, Seconds, Span}
@@ -16,9 +13,9 @@ class RemoteSpec(_system: ActorSystem) extends TestKit(_system)
 
   def this() = this(ActorSystem("ApiSpec"))
 
-  implicit val defaultPatience = PatienceConfig(timeout = Span(2, Seconds), interval = Span(20, Millis))
+  implicit val defaultPatience = PatienceConfig(timeout = Span(2, Seconds), interval = Span(100, Millis))
 
-  val api = Remote()
+  val api = RemoteClient()
 
   override def afterAll(): Unit = {
     TestKit.shutdownActorSystem(system)

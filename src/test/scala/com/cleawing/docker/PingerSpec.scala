@@ -2,7 +2,7 @@ package com.cleawing.docker
 
 import akka.actor.ActorSystem
 import akka.testkit.TestKit
-import com.cleawing.docker.api.Data
+import com.cleawing.docker.api.{RemoteClient, Data}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest._
 import org.scalatest.time.{Seconds, Span, Millis}
@@ -13,9 +13,9 @@ class PingerSpec(_system: ActorSystem) extends TestKit(_system)
 
   def this() = this(ActorSystem("ApiSpec"))
 
-  implicit val defaultPatience = PatienceConfig(timeout = Span(1, Seconds), interval = Span(20, Millis))
+  implicit val defaultPatience = PatienceConfig(timeout = Span(2, Seconds), interval = Span(100, Millis))
 
-  val api = Remote()
+  val api = RemoteClient()
 
   override def afterAll(): Unit = {
     TestKit.shutdownActorSystem(system)
@@ -34,7 +34,7 @@ class PingerSpec(_system: ActorSystem) extends TestKit(_system)
 
     scenario("Connection failed") {
       Given("API connection with missed host and port")
-      val missedApi = Remote("127.0.0.1", 22375)
+      val missedApi = RemoteClient("127.0.0.1", 22375)
       When("ping()")
       Then("Data.ConnectionFailed")
       whenReady(missedApi.ping()) { _.left.value shouldBe a [Data.ConnectionFailed] }
@@ -42,7 +42,7 @@ class PingerSpec(_system: ActorSystem) extends TestKit(_system)
 
     scenario("Pickup TLS-port without tls = on") {
       Given("API connection with TLS-port")
-      val missedApi = Remote(2376)
+      val missedApi = RemoteClient(2376)
       When("ping()")
       Then("Data.ConnectionFailed")
       whenReady(missedApi.ping()) { _.left.value shouldBe a [Data.ConnectionFailed] }
@@ -50,7 +50,7 @@ class PingerSpec(_system: ActorSystem) extends TestKit(_system)
 
     scenario("Establish TLS-connection") {
       Given("API connection with tls = on")
-      val securedApi = Remote(tls_on = true)
+      val securedApi = RemoteClient(tlsOn = true)
       When("ping()")
       whenReady(securedApi.ping()) { res =>
         Then("Data.Pong(OK)")

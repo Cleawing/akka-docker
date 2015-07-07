@@ -14,7 +14,3 @@ project/plugins/project/
 
 #Jetbrains
 .idea/
-
-# mecha
-examples-core-utils
-examples-application

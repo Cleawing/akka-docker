@@ -1,0 +1,8 @@
+{
+  "akka-docker": [
+    {
+      "project": "akka-extensions",
+      "artifact": ["com.cleawing", "akka-extensions", "0.1"]
+    }
+  ]
+}
