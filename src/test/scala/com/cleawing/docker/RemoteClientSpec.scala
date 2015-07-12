@@ -7,7 +7,7 @@ import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Millis, Seconds, Span}
 
-class RemoteSpec(_system: ActorSystem) extends TestKit(_system)
+class RemoteClientSpec(_system: ActorSystem) extends TestKit(_system)
   with FunSpecLike with ShouldMatchers with ScalaFutures
   with EitherValues with BeforeAndAfterAll {
 
